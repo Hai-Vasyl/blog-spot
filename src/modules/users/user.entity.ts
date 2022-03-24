@@ -1,6 +1,5 @@
 import { Column, Entity } from 'typeorm';
 
-import { getRandomColor } from '@/shared/helpers/get-random-color';
 import { GenderEnum } from '@/modules/users/enums/gender.enum';
 import { Base } from '@/shared/entities/base.entity';
 import { RoleEnum } from '@/modules/users/enums/role.enum';
@@ -28,6 +27,6 @@ export class User extends Base {
   @Column({ type: 'date', nullable: true })
   dateOfBirth: Date;
 
-  @Column({ type: 'varchar', default: getRandomColor() })
+  @Column({ type: 'varchar' })
   color: string;
 }

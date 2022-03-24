@@ -1,6 +1,6 @@
-import { LoginUserValidationDTO } from '@/modules/users/dto/validation/login-user-validation.dto';
+import { LoginUserDTO } from '@/modules/users/dto/login-user.dto';
 import { ValidationMiddleware } from '@/shared/middlewares/validation.middleware';
 
 export class LoginValidationMiddleware extends ValidationMiddleware {
-  protected readonly dto = new LoginUserValidationDTO();
+  protected readonly dto = new LoginUserDTO();
 }
