@@ -10,9 +10,11 @@ import { initModules } from '@/modules/init/init.module';
 import { UsersModule } from '@/modules/users/users.module';
 import { RegisterValidationMiddleware } from '@/modules/users/middlewares/register-validation.middleware';
 import { LoginValidationMiddleware } from '@/modules/users/middlewares/login-validation.middleware';
+import { LoggerModule } from '@/shared/modules/logger/logger.module';
+import { LoggerMiddleware } from '@/shared/modules/logger/middlawares/logger.middleware';
 
 @Module({
-  imports: [...initModules, AuthModule, UsersModule],
+  imports: [...initModules, AuthModule, UsersModule, LoggerModule],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
@@ -22,5 +24,9 @@ export class AppModule implements NestModule {
     consumer
       .apply(LoginValidationMiddleware)
       .forRoutes({ path: '/users/login', method: RequestMethod.GET });
+    consumer.apply(LoggerMiddleware).forRoutes({
+      path: '*',
+      method: RequestMethod.ALL,
+    });
   }
 }

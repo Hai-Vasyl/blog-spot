@@ -1,4 +1,5 @@
 import { Injectable, UnprocessableEntityException } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 
 import { LoginUserDTO } from '@/modules/users/dto/login-user.dto';
@@ -6,10 +7,14 @@ import { UserRepository } from '@/modules/users/user.repository';
 import { User } from '@/modules/users/user.entity';
 import { RegisterUserDTO } from '@/modules/users/dto/register-user.dto';
 import { mapErrorResponse } from '@/shared/helpers/map-error-response';
+import { JwtTokenResponseDTO } from '@/modules/users/dto/jwt-token-response.dto';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly userRepository: UserRepository) {}
+  constructor(
+    private readonly userRepository: UserRepository,
+    private readonly jwtService: JwtService,
+  ) {}
 
   public async validateLogin(loginUserDTO: LoginUserDTO): Promise<User> {
     const user = await this.userRepository.findOne({
@@ -54,5 +59,9 @@ export class AuthService {
         }),
       );
     }
+  }
+
+  public async login(sub: number) {
+    return new JwtTokenResponseDTO(this.jwtService.sign({ sub: String(sub) }));
   }
 }
