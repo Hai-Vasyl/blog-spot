@@ -12,9 +12,16 @@ import { RegisterValidationMiddleware } from '@/modules/users/middlewares/regist
 import { LoginValidationMiddleware } from '@/modules/users/middlewares/login-validation.middleware';
 import { LoggerModule } from '@/shared/modules/logger/logger.module';
 import { LoggerMiddleware } from '@/shared/modules/logger/middlawares/logger.middleware';
+import { UploadsModule } from '@/modules/uploads/uploads.module';
 
 @Module({
-  imports: [...initModules, AuthModule, UsersModule, LoggerModule],
+  imports: [
+    ...initModules,
+    AuthModule,
+    UsersModule,
+    LoggerModule,
+    UploadsModule,
+  ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
