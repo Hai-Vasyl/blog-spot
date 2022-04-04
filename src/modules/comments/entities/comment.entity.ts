@@ -22,9 +22,13 @@ export class Comment extends Base {
   @ManyToOne(() => Comment, (comment) => comment.replies)
   comment: Comment;
 
-  @OneToMany(() => Comment, (comment) => comment.comment)
+  @OneToMany(() => Comment, (comment) => comment.comment, {
+    cascade: ['remove'],
+  })
   replies: Comment[];
 
-  @ManyToOne(() => CommentRating, (commentRating) => commentRating.comment)
+  @ManyToOne(() => CommentRating, (commentRating) => commentRating.comment, {
+    cascade: ['remove'],
+  })
   commentRatings: CommentRating[];
 }

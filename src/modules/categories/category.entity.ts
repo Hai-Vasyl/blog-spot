@@ -22,9 +22,11 @@ export class Category extends Base {
   @ManyToOne(() => Upload, (upload) => upload.uploadCategories)
   preview: Upload;
 
-  @OneToMany(() => Upload, (upload) => upload.category)
+  @OneToMany(() => Upload, (upload) => upload.category, { cascade: ['remove'] })
   categoryUploads: Upload[];
 
-  @OneToMany(() => Content, (content) => content.category)
+  @OneToMany(() => Content, (content) => content.category, {
+    cascade: ['remove'],
+  })
   categoryContents: Content[];
 }

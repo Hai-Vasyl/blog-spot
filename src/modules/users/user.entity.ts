@@ -67,10 +67,14 @@ export class User extends Base {
   @OneToMany(() => Section, (section) => section.creator)
   userSections: Section[];
 
-  @OneToMany(() => ContentRating, (rating) => rating.user)
+  @OneToMany(() => ContentRating, (rating) => rating.user, {
+    cascade: ['remove'],
+  })
   userContentRatings: ContentRating[];
 
-  @OneToMany(() => CommentRating, (commentRating) => commentRating.user)
+  @OneToMany(() => CommentRating, (commentRating) => commentRating.user, {
+    cascade: ['remove'],
+  })
   userCommentRatings: CommentRating[];
 
   @OneToMany(() => Comment, (comment) => comment.author)

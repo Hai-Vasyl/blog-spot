@@ -35,6 +35,9 @@ export class Content extends Base {
   @Column({ type: 'int', default: 0 })
   rating: number;
 
+  @Column({ type: 'varchar' })
+  color: string;
+
   @ManyToOne(() => Upload, (upload) => upload.uploadContents)
   preview: Upload;
 
@@ -48,12 +51,18 @@ export class Content extends Base {
   @JoinTable()
   tags: Tag[];
 
-  @OneToMany(() => Section, (section) => section.content)
+  @OneToMany(() => Section, (section) => section.content, {
+    cascade: ['remove'],
+  })
   sections: Section[];
 
-  @OneToMany(() => ContentRating, (rating) => rating.content)
+  @OneToMany(() => ContentRating, (rating) => rating.content, {
+    cascade: ['remove'],
+  })
   contentRatings: ContentRating[];
 
-  @OneToMany(() => Comment, (comment) => comment.content)
+  @OneToMany(() => Comment, (comment) => comment.content, {
+    cascade: ['remove'],
+  })
   comments: Comment[];
 }
