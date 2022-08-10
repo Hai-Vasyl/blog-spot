@@ -6,11 +6,12 @@ import databaseConfig from '@/configs/database.config';
 import jwtConfig from '@/configs/jwt.config';
 import winstonConfig from '@/configs/winston.config';
 import commonConfig from '@/configs/common.config';
+import awsConfig from '@/configs/aws.config';
 
 export const initModules = [
   ConfigModule.forRoot({
     envFilePath: 'configs/.env',
-    load: [databaseConfig, jwtConfig, winstonConfig, commonConfig],
+    load: [databaseConfig, jwtConfig, winstonConfig, commonConfig, awsConfig],
   }),
   TypeOrmModule.forRootAsync({
     imports: [ConfigModule],

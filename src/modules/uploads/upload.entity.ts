@@ -23,17 +23,8 @@ export class Upload extends Timestamp {
   @Column({ type: 'varchar' })
   name: string;
 
-  @Column({ type: 'varchar', unique: true })
-  urlOrigin: string;
-
-  @Column({ type: 'varchar' })
-  nameOrigin: string;
-
   @Column({ type: 'varchar' })
   mimetype: string;
-
-  @Column({ type: 'varchar' })
-  mimetypeOrigin: string;
 
   @Column({ type: 'varchar' })
   title: string;
