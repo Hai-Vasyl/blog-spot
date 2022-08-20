@@ -17,7 +17,7 @@ export class AuthService {
   ) {}
 
   public async validateLogin(loginUserDTO: LoginUserDTO): Promise<User> {
-    const user = await this.userRepository.findOne({
+    const user = await this.userRepository.model.findOne({
       email: loginUserDTO.email,
     });
 
@@ -47,7 +47,7 @@ export class AuthService {
   public async validateRegister(
     registerUserDTO: RegisterUserDTO,
   ): Promise<void> {
-    const user = await this.userRepository.findOne({
+    const user = await this.userRepository.model.findOne({
       email: registerUserDTO.email,
     });
 
@@ -61,7 +61,7 @@ export class AuthService {
     }
   }
 
-  public async login(sub: number) {
-    return new JwtTokenResponseDTO(this.jwtService.sign({ sub: String(sub) }));
+  public async login(sub: string) {
+    return new JwtTokenResponseDTO(this.jwtService.sign({ sub }));
   }
 }

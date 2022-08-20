@@ -1,8 +1,7 @@
-import { Column } from 'typeorm';
-
 import { Base } from '@/shared/entities/base.entity';
+import { Prop } from '@nestjs/mongoose';
 
 export class Rating extends Base {
-  @Column({ type: 'boolean' })
+  @Prop({ type: Boolean })
   state: boolean;
 }

@@ -1,82 +1,45 @@
-import {
-  Column,
-  Entity,
-  JoinTable,
-  ManyToMany,
-  ManyToOne,
-  OneToMany,
-} from 'typeorm';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document, Types } from 'mongoose';
 
 import { GenderEnum } from '@/modules/users/enums/gender.enum';
 import { Base } from '@/shared/entities/base.entity';
 import { RoleEnum } from '@/modules/users/enums/role.enum';
-import { Upload } from '@/modules/uploads/upload.entity';
-import { Category } from '@/modules/categories/category.entity';
-import { Content } from '@/modules/contents/entities/content.entity';
-import { Tag } from '@/modules/tags/tag.entity';
-import { Section } from '@/modules/sections/section.entity';
-import { ContentRating } from '@/modules/contents/entities/content-rating.entity';
-import { Comment } from '@/modules/comments/entities/comment.entity';
-import { CommentRating } from '@/modules/comments/entities/comment-rating.entity';
+import { Feature } from '@/shared/common/feature';
+import { File } from '../files/file.entity';
 
-@Entity('user')
+@Schema({ timestamps: true })
 export class User extends Base {
-  @Column({ type: 'varchar' })
+  @Prop({ type: String, required: true, maxlength: 30 })
   firstName: string;
 
-  @Column({ type: 'varchar' })
+  @Prop({ type: String, required: true, maxlength: 30 })
   lastName: string;
 
-  @Column({ type: 'varchar', unique: true })
+  @Prop({ type: String, required: true, unique: true })
   email: string;
 
-  @Column({ type: 'varchar' })
+  @Prop({ type: String, required: true })
   password: string;
 
-  @Column({ type: 'enum', enum: GenderEnum, nullable: true })
+  @Prop({ type: String, enum: Object.values(GenderEnum) })
   gender: GenderEnum;
 
-  @Column({ type: 'enum', enum: RoleEnum, default: RoleEnum.USER })
+  @Prop({ type: String, enum: Object.values(RoleEnum), default: RoleEnum.USER })
   role: RoleEnum;
 
-  @Column({ type: 'date', nullable: true })
-  dateOfBirth: Date;
+  @Prop({ type: Date })
+  birth: Date;
 
-  @Column({ type: 'varchar' })
+  @Prop({ type: String, required: true })
   color: string;
 
-  @ManyToOne(() => Upload, (upload) => upload.uploadUsers)
-  avatar: Upload;
+  @Prop({ type: String })
+  bio: string;
 
-  @ManyToMany(() => Tag)
-  @JoinTable()
-  tags: Tag[];
-
-  @OneToMany(() => Upload, (upload) => upload.creator)
-  userUploads: Upload[];
-
-  @OneToMany(() => Category, (category) => category.creator)
-  userCategories: Category[];
-
-  @OneToMany(() => Content, (content) => content.author)
-  userContents: Content[];
-
-  @OneToMany(() => Tag, (tag) => tag.creator)
-  userTags: Tag[];
-
-  @OneToMany(() => Section, (section) => section.creator)
-  userSections: Section[];
-
-  @OneToMany(() => ContentRating, (rating) => rating.user, {
-    cascade: ['remove'],
-  })
-  userContentRatings: ContentRating[];
-
-  @OneToMany(() => CommentRating, (commentRating) => commentRating.user, {
-    cascade: ['remove'],
-  })
-  userCommentRatings: CommentRating[];
-
-  @OneToMany(() => Comment, (comment) => comment.author)
-  comments: Comment[];
+  @Prop({ type: Types.ObjectId, ref: 'File' })
+  avatar: File | string;
 }
+
+export type UserDoc = User & Document;
+export const UserSchema = SchemaFactory.createForClass(User);
+export const UserFeature = new Feature(User.name, UserSchema);

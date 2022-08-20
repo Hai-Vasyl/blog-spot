@@ -1,14 +1,23 @@
-import { Entity, ManyToOne } from 'typeorm';
+import { Types } from 'mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 import { Content } from '@/modules/contents/entities/content.entity';
 import { User } from '@/modules/users/user.entity';
 import { Rating } from '@/shared/entities/rating.entity';
+import { Feature } from '@/shared/common/feature';
 
-@Entity('content-rating')
+@Schema({ timestamps: true })
 export class ContentRating extends Rating {
-  @ManyToOne(() => User, (user) => user.userContentRatings)
-  user: User;
+  @Prop({ type: Types.ObjectId, ref: 'User', required: true })
+  user: User | string;
 
-  @ManyToOne(() => Content, (content) => content.contentRatings)
-  content: Content;
+  @Prop({ type: Types.ObjectId, ref: 'Content', required: true })
+  content: Content | string;
 }
+
+export type ContentRatingDoc = ContentRating & Document;
+export const ContentRatingSchema = SchemaFactory.createForClass(ContentRating);
+export const ContentRatingFeature = new Feature(
+  ContentRating.name,
+  ContentRatingSchema,
+);

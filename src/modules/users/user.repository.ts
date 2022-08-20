@@ -1,10 +1,14 @@
-import { EntityRepository, Repository } from 'typeorm';
+import { Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
+import { Injectable } from '@nestjs/common';
 
-import { User } from '@/modules/users/user.entity';
+import { User, UserDoc } from '@/modules/users/user.entity';
 
-@EntityRepository(User)
-export class UserRepository extends Repository<User> {
-  createUser() {
-    return new User();
+@Injectable()
+export class UserRepository {
+  public constructor(
+    @InjectModel(User.name) public readonly model: Model<UserDoc>,
+  ) {
+    this.model = model;
   }
 }

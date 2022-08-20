@@ -1,0 +1,41 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+$colors: (
+  primary: rgb(228, 232, 241),
+  primary-light: lighten(rgb(228, 232, 241), 20%),
+  primary-dark: darken(rgb(228, 232, 241), 20%),
+  secondary: #333,
+  accent: darkorange,
+
+  danger: red,
+);
+
+$fonts: (
+  primary: 'Roboto Mono', monospace,
+);
+
+// $shadows: (
+
+// )
+
+@function getColor($color) {
+  @return map-get($colors, $color) 
+};
+
+@function getFont($font) {
+  @return map-get($fonts, $font)
+};
+
+body {
+  font-family: getFont(primary);
+}
+
+button, input {
+  font-family: inherit;
+  background-color: inherit;
+  color: inherit;
+}

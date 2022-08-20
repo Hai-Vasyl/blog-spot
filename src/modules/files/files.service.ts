@@ -9,12 +9,12 @@ import { v4 as uuidv4 } from 'uuid';
 import * as sharp from 'sharp';
 
 import { ExceptionTypeMessageEnum } from '@/shared/enums/exception-type-message.enum';
-import { Upload } from '@/modules/uploads/upload.entity';
-import { CreateFileRequestDTO } from '@/modules/uploads/dto/create-file-request.dto';
+import { File } from '@/modules/files/file.entity';
+import { CreateFileRequestDTO } from '@/modules/files/dto/create-file-request.dto';
 import { validateDto } from '@/shared/helpers/validate-dto';
 
 @Injectable()
-export class UploadsService {
+export class FilesService {
   private readonly awsParams: any;
   private readonly s3Client: S3Client;
   private readonly putBucketParams;
@@ -64,7 +64,7 @@ export class UploadsService {
   }
 
   private getKeyFile(filename: string): string {
-    return uuidv4() + filename;
+    return `${uuidv4()}-${filename}`;
   }
 
   private async sendRequest(

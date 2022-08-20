@@ -1,68 +1,46 @@
-import {
-  Column,
-  Entity,
-  JoinTable,
-  ManyToMany,
-  ManyToOne,
-  OneToMany,
-} from 'typeorm';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document, Types } from 'mongoose';
 
 import { Base } from '@/shared/entities/base.entity';
-import { Upload } from '@/modules/uploads/upload.entity';
 import { User } from '@/modules/users/user.entity';
 import { Category } from '@/modules/categories/category.entity';
-import { Tag } from '@/modules/tags/tag.entity';
-import { Section } from '@/modules/sections/section.entity';
 import { AccessTypeEnum } from '@/shared/enums/access-type.enum';
-import { ContentRating } from '@/modules/contents/entities/content-rating.entity';
-import { Comment } from '@/modules/comments/entities/comment.entity';
+import { Feature } from '@/shared/common/feature';
 
-@Entity('content')
+@Schema({ timestamps: true })
 export class Content extends Base {
-  @Column({ type: 'varchar' })
+  @Prop({ type: String, required: true })
   title: string;
 
-  @Column({ type: 'text' })
+  @Prop({ type: String, required: true })
   description: string;
 
-  @Column({
-    type: 'enum',
-    enum: AccessTypeEnum,
+  @Prop({
+    type: String,
+    enum: Object.values(AccessTypeEnum),
     default: AccessTypeEnum.PUBLIC,
   })
   accessType: string;
 
-  @Column({ type: 'int', default: 0 })
+  @Prop({ type: Number, default: 0 })
   rating: number;
 
-  @Column({ type: 'varchar' })
+  @Prop({ type: Number, default: 0 })
+  comments: number;
+
+  @Prop({ type: String, required: true })
   color: string;
 
-  @ManyToOne(() => Upload, (upload) => upload.uploadContents)
-  preview: Upload;
+  @Prop({ type: Types.ObjectId, ref: 'User', required: true })
+  author: User | string;
 
-  @ManyToOne(() => User, (user) => user.userContents)
-  author: User;
+  @Prop({ type: Types.ObjectId, ref: 'Category', required: true })
+  category: Category | string;
 
-  @ManyToOne(() => Category, (category) => category.categoryContents)
-  category: Category;
-
-  @ManyToMany(() => Tag)
-  @JoinTable()
-  tags: Tag[];
-
-  @OneToMany(() => Section, (section) => section.content, {
-    cascade: ['remove'],
-  })
-  sections: Section[];
-
-  @OneToMany(() => ContentRating, (rating) => rating.content, {
-    cascade: ['remove'],
-  })
-  contentRatings: ContentRating[];
-
-  @OneToMany(() => Comment, (comment) => comment.content, {
-    cascade: ['remove'],
-  })
-  comments: Comment[];
+  @Prop({ type: Types.ObjectId, ref: 'File' })
+  preview: File | string;
 }
+
+export type ContentDoc = Content & Document;
+export const ContentSchema = SchemaFactory.createForClass(Content);
+export const ContentFeature = new Feature(Content.name, ContentSchema);
