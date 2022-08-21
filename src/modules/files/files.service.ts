@@ -6,7 +6,7 @@ import {
 } from '@aws-sdk/client-s3';
 import { ConfigService } from '@nestjs/config';
 import { v4 as uuidv4 } from 'uuid';
-import * as sharp from 'sharp';
+import sharp from 'sharp';
 
 import { ExceptionTypeMessageEnum } from '@/shared/enums/exception-type-message.enum';
 import { File } from '@/modules/files/file.entity';
