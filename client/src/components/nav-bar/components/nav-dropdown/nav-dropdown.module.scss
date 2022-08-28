@@ -1,0 +1,34 @@
+@import '../../../../index.scss';
+
+.nav-dropdown {
+  position: relative;
+  
+  &:hover {
+    & .nav-dropdown__btn {
+      background-color: getColor(primary-light);
+    }
+
+    & .nav-dropdown__menu {
+      display: flex;
+    }
+  }
+
+  &__btn {
+    cursor: pointer;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  &__menu {
+    flex-direction: column;
+    position: absolute;
+    bottom: 0;
+    z-index: 3;
+    left: 66px;
+    display: none;
+    background-color: getColor(primary);
+    width: 220px;
+    animation: fade getTransition(primary);
+    border-left: 1px solid getColor(primary-dark);
+  }
+}

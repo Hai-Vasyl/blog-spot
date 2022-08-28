@@ -1,0 +1,32 @@
+@import '../../index.scss';
+
+.popup {
+  min-width: 400px;
+  min-height: 300px;
+  border: 1px solid black;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 6;
+  transform: translate(-50%, -50%);
+  animation: fade getTransition(primary);
+  display: none;
+  
+  &--active{
+    display: block;
+  }
+
+  &__btn-close {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+}
+
+.popup__btn-close {
+  background-color: red;
+
+  & .btn-action__icon {
+    background-color: green;
+  }
+}

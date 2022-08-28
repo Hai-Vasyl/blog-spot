@@ -23,6 +23,7 @@ import { RoleEnum } from '../enums/role.enum';
 import { Route } from '../common/classes/route.class';
 import { renderRoutes } from '../helpers/render-routes';
 import { Routes as WrapperRoutes } from 'react-router-dom';
+import TipsAndTricksPage from '../pages/tips-and-tricks/TipsAndTricksPage';
 
 const Routes: React.FC = () => {
   const userRole: RoleEnum = RoleEnum.ADMIN;
@@ -32,6 +33,7 @@ const Routes: React.FC = () => {
     new Route('/search', SearchPage, 'Search for Content, Files or User Page'),
     new Route('/categories', ContentCategoriesPage, 'Content Categories Page'),
     new Route('/about', AboutUsPage, 'About Us Page'),
+    new Route('/tips', TipsAndTricksPage, 'Tips & Tricks Page'),
     new Route('/settings', SettingsPage, 'Settings Page', [
       RoleEnum.ADMIN,
       RoleEnum.MODERATOR,

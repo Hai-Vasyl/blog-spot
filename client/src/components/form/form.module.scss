@@ -1,0 +1,15 @@
+@import '../../index.scss';
+
+.form {
+  &__title{
+    padding: 20px 0;
+  }
+
+  &__fields{
+    padding: 30px;
+  }
+
+  &__buttons{
+    padding: 0 30px 30px;
+  }
+}

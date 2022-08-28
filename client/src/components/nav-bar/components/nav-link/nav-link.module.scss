@@ -1,0 +1,59 @@
+@import '../../../../index.scss';
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: getColor(secondary);
+  gap: 7px;
+  position: relative;
+  padding: 12px 0;
+  transition: getTransition(primary);
+  text-align: left;
+  cursor: pointer;
+
+  &:hover {
+    background-color: getColor(primary-light);
+
+    .nav-link__name {
+      @extend %fade-in;
+    }
+  }
+  
+  &--active {
+    color: getColor(accent);
+    background-color: getColor(primary-light);
+  }
+
+  &__icon {
+    font-size: 2.2em;
+  }
+
+  &__name{
+    position: absolute;
+    left: 66px;
+    min-width: 160px;
+    padding: 20px 10px;
+    text-shadow: 0px 0px 2px white;
+    @extend %fade-out;
+  }
+
+  &.nav-menu-link {
+    justify-content: flex-start;
+    padding: 10px 12px;
+
+    & .nav-link__name {
+      visibility: visible;
+      opacity: 1;
+      position: static;
+      min-width: auto;
+      padding: 0;
+      text-shadow: none;
+    }
+    
+    & .nav-link__icon {
+      font-size: 1em;
+    }
+  }
+}
