@@ -20,7 +20,6 @@ export class FieldInputModel {
   placeholder: string;
   title: string;
   important: boolean;
-  message = '';
 
   public constructor({
     name,
@@ -38,7 +37,12 @@ export class FieldInputModel {
     this.important = important || false;
   }
 
-  public getElement(setForm: SetForm, styles: IStyle[] = []) {
+  public getElement(
+    setForm: SetForm,
+    styles: IStyle[] = [],
+    clearError: (field: string) => void,
+    message?: string,
+  ) {
     return (
       <FieldInput
         key={this.name}
@@ -49,9 +53,10 @@ export class FieldInputModel {
         placeholder={this.placeholder}
         important={this.important}
         type={this.type}
-        message={this.message}
+        message={message || ''}
         setForm={setForm}
         styles={styles}
+        clearError={clearError}
       />
     );
   }

@@ -1,0 +1,47 @@
+@import '../../index.scss';
+
+.btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 20px;
+  background-color: getColor(secondary);
+  border-radius: getRadius(primary);
+  border: 2px solid getColor(primary-dark);
+  transition: getTransition(primary);
+  box-shadow: getShadow(secondary);
+
+  & > * {
+    color: getColor(primary-light);
+    transition: getTransition(primary);
+  }
+
+  &:hover {
+    box-shadow: none;
+    
+    & > * {
+      color: getColor(accent);
+    }
+  }
+  
+  &__icon {
+    font-size: 1.2em;
+  }
+  
+  &__name {
+    font-size: 0.9em;
+    font-weight: bold;
+  }
+
+  &--icon-right{
+    flex-direction: row-reverse;
+  }
+
+  &:focus {
+    border-color: getColor(accent);
+  }
+
+  &:active{
+    opacity: 0.2;
+  }
+}

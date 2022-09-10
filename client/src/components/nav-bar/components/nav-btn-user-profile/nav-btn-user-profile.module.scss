@@ -6,4 +6,17 @@
   height: 48px;
   position: relative;
   overflow: hidden;
+  position: relative;
+  cursor: pointer;
+
+  .avatar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    display: block;
+    object-fit: cover;
+  }
 }

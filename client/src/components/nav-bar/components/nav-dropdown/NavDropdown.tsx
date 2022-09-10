@@ -1,8 +1,7 @@
 import React, { ReactNode } from 'react';
 import { CascadeStyle, IStyle } from '../../../../helpers/cascade-style.class';
 
-import stylesNavLink from '../nav-link/nav-link.module.scss';
-import style from './nav-dropdown.module.scss';
+import style from '../nav-link/nav-link.module.scss';
 
 interface INavDropdownProps {
   button: ReactNode;
@@ -19,11 +18,7 @@ const NavDropdown: React.FC<INavDropdownProps> = ({
 
   return (
     <div className={s.getClass('nav-dropdown')}>
-      <div
-        className={`${stylesNavLink['nav-link']} ${s.getClass(
-          'nav-dropdown__btn',
-        )}`}
-      >
+      <div className={s.getClass('nav-link', 'nav-dropdown__btn')}>
         {button}
       </div>
       <div className={s.getClass('nav-dropdown__menu')}>{children}</div>

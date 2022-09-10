@@ -1,0 +1,56 @@
+@import './index.scss';
+
+$len: 300px;
+$time: 2000ms;
+
+.loader {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: getRadius(primary);
+  z-index: 4;
+  display: none;
+  animation: fade getTransition(primary);
+
+  &--active {
+    display: flex;
+  }
+	
+  svg {
+    margin: auto;
+	}
+}
+
+#infinity-outline {
+	fill: transparent;
+	stroke-width: 4;
+	stroke: getColor(accent);
+	stroke-dasharray: $len*0.01, $len;
+	stroke-dashoffset: 0;
+	animation: anim $time linear infinite;
+}
+#infinity-bg {
+	fill: transparent;
+	stroke-width: 4;
+	stroke: rgba(0,0,0,0.2);
+	opacity: 0.2;
+}
+
+@keyframes anim {
+  12.5% {
+    stroke-dasharray: $len*0.14, $len;
+    stroke-dashoffset: -$len*0.11;
+  }
+  43.75% {
+    stroke-dasharray: $len*0.35, $len;
+    stroke-dashoffset: -$len*0.35;
+  }
+  100% {
+    stroke-dasharray: $len*0.01, $len;
+    stroke-dashoffset: -$len*0.99;
+  }
+}

@@ -16,7 +16,7 @@ const FieldMessage: React.FC<IFieldMessageProps> = ({ message, styles }) => {
       <span
         className={`material-symbols-outlined ${s.getClass('message__icon')}`}
       >
-        privacy_tip
+        info
       </span>
       <span className={s.getClass('message__dialog-box')}>
         <span className={s.getClass('message__triangle')}></span>

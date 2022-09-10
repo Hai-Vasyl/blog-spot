@@ -6,25 +6,31 @@
 
 $colors: (
   primary: rgb(228, 232, 241),
-  primary-light: lighten(rgb(228, 232, 241), 10%),
-  primary-dark: darken(rgb(228, 232, 241), 10%),
-  secondary: #333,
-  accent: rgb(196, 109, 3),
+  primary-light: lighten(rgb(228, 232, 241), 5%),
+  primary-dark: darken(rgb(228, 232, 241), 5%),
+  secondary: #444,
+
+  accent: rgb(218, 121, 2),
 
   danger: red,
 );
 
 $fonts: (
-  primary: ('Roboto Mono', monospace),
+  primary: ('Open Sans', sans-serif),
 );
 
 $transitions: (
   primary: 0.3s ease
 );
 
-// $shadows: (
+$shadows: (
+  primary: (rgba(149, 157, 165, 0.2) 0px 8px 24px),
+  secondary: (rgba(0, 0, 0, 0.36) 0px 1px 4px)
+);
 
-// )
+$radiuses: (
+  primary: 6px
+);
 
 @function getColor($color) {
   @return map-get($colors, $color) 
@@ -38,9 +44,18 @@ $transitions: (
   @return map-get($fonts, $font)
 };
 
+@function getRadius($radius) {
+  @return map-get($radiuses, $radius)
+};
+
+@function getShadow($shadow) {
+  @return map-get($shadows, $shadow)
+};
+
 body {
   font-family: getFont(primary);
   font-size: 1em;
+  color: getColor(secondary);
 }
 
 button, input {
@@ -49,6 +64,10 @@ button, input {
   color: inherit;
   border: none;
   font-size: inherit;
+}
+
+button {
+  cursor: pointer;
 }
 
 %fade-in {

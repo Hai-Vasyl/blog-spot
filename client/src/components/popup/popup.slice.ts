@@ -1,33 +1,34 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { PayloadAction } from '@reduxjs/toolkit';
+import { SliceFactory } from '../../redux/slice-factory.class';
+
+interface IActivatePayload {
+  element: any;
+}
 
 interface PopupState {
   active: boolean;
   element: any;
 }
 
-interface IActivatePayload {
-  element: any;
-}
-
-const initialState: PopupState = {
+const state: PopupState = {
   active: false,
   element: () => null,
 };
 
-const popupSlice = createSlice({
+export default new SliceFactory({
   name: 'popup',
-  initialState,
+  state,
   reducers: {
-    activatePopup: (state, action: PayloadAction<IActivatePayload>) => {
+    activatePopup: (
+      state: PopupState,
+      { payload }: PayloadAction<IActivatePayload>,
+    ) => {
       state.active = true;
-      state.element = action.payload.element;
+      state.element = payload.element;
     },
-    deactivatePopup: (state) => {
+    deactivatePopup: (state: PopupState) => {
       state.active = false;
       state.element = () => null;
     },
   },
-});
-
-export const { activatePopup, deactivatePopup } = popupSlice.actions;
-export default popupSlice.reducer;
+}).init();

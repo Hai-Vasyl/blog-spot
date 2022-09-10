@@ -38,22 +38,55 @@
     text-shadow: 0px 0px 2px white;
     @extend %fade-out;
   }
+}
 
-  &.nav-menu-link {
-    justify-content: flex-start;
-    padding: 10px 12px;
-
-    & .nav-link__name {
-      visibility: visible;
-      opacity: 1;
-      position: static;
-      min-width: auto;
-      padding: 0;
-      text-shadow: none;
+.nav-dropdown {
+  position: relative;
+  
+  &:hover {
+    & .nav-dropdown__btn {
+      background-color: getColor(primary-light);
     }
-    
-    & .nav-link__icon {
-      font-size: 1em;
+
+    & .nav-dropdown__menu {
+      display: flex;
+    }
+  }
+
+  &__btn {
+    cursor: pointer;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  &__menu {
+    flex-direction: column;
+    position: absolute;
+    bottom: 0;
+    z-index: 3;
+    left: 66px;
+    display: none;
+    background-color: getColor(primary);
+    width: 220px;
+    animation: fade getTransition(primary);
+    border-left: 1px solid getColor(primary-dark);
+
+    .nav-link {
+      justify-content: flex-start;
+      padding: 10px 12px;
+
+      .nav-link__name {
+        visibility: visible;
+        opacity: 1;
+        position: static;
+        min-width: auto;
+        padding: 0;
+        text-shadow: none;
+      }
+      
+      .nav-link__icon {
+        font-size: 1em;
+      }
     }
   }
 }

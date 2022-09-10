@@ -31,7 +31,7 @@ export class UsersController {
   }
 
   @UseGuards(LocalAuthGuard)
-  @Get('/login')
+  @Post('/login')
   public async login(@Req() req: Request): Promise<JwtTokenResponseDTO> {
     return this.usersService.login(req.user as User);
   }

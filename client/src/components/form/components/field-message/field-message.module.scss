@@ -2,24 +2,36 @@
 
 .message{
   position: relative;
+
   &__icon{
-    font-size: 1em;
+    font-size: 1.2em;
+    color: getColor(danger);
+    font-weight: bold;
   }
 
   &__dialog-box{
     position: absolute;
-    top: 0;
-    right: 0;
+    top: -8px;
+    right: 28px;
     padding: 5px;
+    padding-bottom: 7px;
+    width: 200px;
+    background-color: getColor(primary-light);
+    box-shadow: getShadow(primary);
+    border-radius: getRadius(primary);
   }
 
   &__triangle{
     width: 0;
     height: 0;
-    border: 10px solid red;
+    border: 8px solid transparent;
+    position: absolute;
+    right: -15px;
+    top: 10px;
+    border-left-color: getColor(primary-light);
   }
 
   &__text{
-
+    font-size: 0.7em;
   }
 }

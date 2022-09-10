@@ -12,9 +12,15 @@ export interface IField {
   value: string;
   placeholder: string;
   title: string;
-  message: string;
   important: boolean;
-  getElement: (setForm: SetForm, styles?: IStyle[]) => ReactNode;
+  getElement: (
+    setForm: SetForm,
+    styles: IStyle[],
+    clearError: (field: string) => void,
+    message?: string,
+  ) => ReactNode;
 }
 
 export type IForm = IField[];
+
+export type FormState = [IForm, SetForm];

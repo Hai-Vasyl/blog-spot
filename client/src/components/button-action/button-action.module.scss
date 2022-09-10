@@ -4,10 +4,29 @@
   cursor: pointer;
   width: 35px;
   height: 35px;
-  border: 1px solid black;
-  text-align: center;
+  border: 2px solid getColor(primary-dark);
+  background-color: getColor(primary-light);
+  border-radius: getRadius(primary);
+  display: flex;
+  transition: getTransition(primary);
 
   &__icon {
+    margin: auto;
+    font-size: 1.2em;
+    font-weight: bold;
+  }
 
+  & > * {
+    transition: getTransition(primary);
+  }
+
+  &:hover {
+    & > * {
+      color: getColor(accent);
+    }
+  }
+
+  &:focus {
+    border-color: getColor(accent);
   }
 }

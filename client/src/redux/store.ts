@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
 
 import popup from '../components/popup/popup.slice';
+import auth from '../components/auth/auth.slice';
 
 export const store = configureStore({
   reducer: {
-    popup,
+    popup: popup.reducer,
+    auth: auth.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({ serializableCheck: false }),

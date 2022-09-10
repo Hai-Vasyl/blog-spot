@@ -5,7 +5,11 @@ const useStore = () => {
   const state = useSelector((state: RootState) => state);
   const dispatch = useDispatch();
 
-  return { state, dispatch };
+  const call = (actions: any) => {
+    dispatch(actions);
+  };
+
+  return { state, call };
 };
 
 export default useStore;

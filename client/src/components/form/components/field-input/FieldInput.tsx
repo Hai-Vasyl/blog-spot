@@ -4,6 +4,8 @@ import { IForm, SetForm } from '../../interfaces';
 import FieldMessage from '../field-message/FieldMessage';
 import { CascadeStyle, IStyle } from '../../../../helpers/cascade-style.class';
 import style from './field-input.module.scss';
+import useStore from '../../../../hooks/useStore';
+import auth from '../../../auth/auth.slice';
 
 interface IFieldInputProps {
   name: string;
@@ -15,6 +17,7 @@ interface IFieldInputProps {
   message: string;
   important: boolean;
   setForm: SetForm;
+  clearError: (field: string) => void;
   styles?: IStyle[];
 }
 
@@ -29,11 +32,15 @@ const FieldInput: React.FC<IFieldInputProps> = ({
   important,
   setForm,
   styles,
+  clearError,
 }) => {
   const s = new CascadeStyle(style, styles);
 
+  const { call } = useStore();
+
   const handleChangeField = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
+    call(auth.act.clearMessage({ field: name }));
 
     setForm((prev: IForm) =>
       prev.map((field) => {
@@ -71,34 +78,6 @@ const FieldInput: React.FC<IFieldInputProps> = ({
       </div>
     </div>
   );
-  // return (
-  //   <div
-  //     className={`${styles['field-input']} ${
-  //       hidden ? styles['field-input--hidden'] : ''
-  //     }`}
-  //   >
-  //     <div className={styles['field-input__row-label']}>
-  //       <label className={styles['field-input__label']}>
-  //         {title}
-  //         {important && <sup>*</sup>}
-  //       </label>
-  //       {message && <FieldMessage message={message} />}
-  //     </div>
-  //     <div
-  //       className={`${styles['field-input__row-input']} ${
-  //         message ? styles['field-input--error'] : ''
-  //       }`}
-  //     >
-  //       <input
-  //         type={type}
-  //         name={name}
-  //         value={value}
-  //         placeholder={placeholder}
-  //         onChange={handleChangeField}
-  //       />
-  //     </div>
-  //   </div>
-  // );
 };
 
 export default FieldInput;

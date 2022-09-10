@@ -1,0 +1,26 @@
+@import '../../index.scss';
+
+.btn {
+  border-color: getColor(primary-dark);
+  background-color: transparent;
+  box-shadow: none;
+  background-color: getColor(primary-light);
+
+  &--icon-right{
+    flex-direction: row-reverse;
+  }
+
+  & > * {
+    color: inherit;
+  }
+  
+  &__icon {
+    font-size: 1.2em;
+    
+  }
+  
+  &__name {
+    font-size: 0.9em;
+    font-weight: bold;
+  }
+}

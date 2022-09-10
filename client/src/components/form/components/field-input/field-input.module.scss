@@ -1,0 +1,48 @@
+@import '../../../../index.scss';
+
+.field-input {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  animation: fade 0.6s ease;
+  
+  &--hidden{
+    display: none;
+  }
+
+  &__row-label{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__label{
+    font-size: 0.9em;
+    
+    sup {
+      color: getColor(danger);
+    }
+  }
+
+  &__row-input {
+    input {
+      background-color: getColor(primary-dark);
+      width: 100%;
+      padding: 5px 7px;
+      border-radius: getRadius(primary);
+      outline: none;
+      border: 2px solid getColor(primary-dark);
+      transition: getTransition(primary);
+
+      &:focus {
+        border-color: getColor(accent);
+      }
+    }
+  }
+
+  &--error {
+    input {
+      border-color: getColor(danger);
+    }
+  }
+}

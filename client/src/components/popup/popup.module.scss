@@ -1,9 +1,9 @@
 @import '../../index.scss';
 
 .popup {
-  min-width: 400px;
-  min-height: 300px;
-  border: 1px solid black;
+  min-width: 200px;
+  min-height: 200px;
+  max-width: 100%;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -11,22 +11,16 @@
   transform: translate(-50%, -50%);
   animation: fade getTransition(primary);
   display: none;
-  
+  border-radius: getRadius(primary);
+  box-shadow: getShadow(primary);
+
   &--active{
     display: block;
   }
 
-  &__btn-close {
+  .btn-action {
     position: absolute;
-    top: 0;
-    right: 0;
-  }
-}
-
-.popup__btn-close {
-  background-color: red;
-
-  & .btn-action__icon {
-    background-color: green;
+    top: 14px;
+    right: 14px;
   }
 }

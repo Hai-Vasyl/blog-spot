@@ -23,7 +23,7 @@ export class AppModule implements NestModule {
       .forRoutes({ path: '/users/register', method: RequestMethod.POST });
     consumer
       .apply(LoginValidationMiddleware)
-      .forRoutes({ path: '/users/login', method: RequestMethod.GET });
+      .forRoutes({ path: '/users/login', method: RequestMethod.POST });
     consumer.apply(LoggerMiddleware).forRoutes({
       path: '*',
       method: RequestMethod.ALL,

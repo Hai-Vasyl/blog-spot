@@ -1,15 +1,34 @@
 @import '../../index.scss';
 
 .form {
+  background-color: getColor(primary);
+  border: 2px solid getColor(primary-dark);
+  border-radius: getRadius(primary);
+  position: relative;
+
   &__title{
-    padding: 20px 0;
+    padding: 15px 30px;
+    border-bottom: 2px solid getColor(primary-dark);
+    
+    h2 {
+      text-align: center;
+      font-size: 1.3em;
+      font-weight: bold;
+      color: getColor(secondary);
+    }
   }
 
   &__fields{
     padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
   }
 
   &__buttons{
     padding: 0 30px 30px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
   }
 }

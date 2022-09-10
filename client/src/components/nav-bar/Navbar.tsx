@@ -9,8 +9,8 @@ import NavDropdownButton from './components/nav-dropdown-button/NavDropdownButto
 import NavDropdownLink from './components/nav-dropdown-link/NavDropdownLink';
 import NavDropdown from './components/nav-dropdown/NavDropdown';
 import NavLink from './components/nav-link/NavLink';
-import useFormAuth from '../form-auth/hooks/useFormAuth';
 import NavBtnIcon from './components/nav-btn-icon/NavBtnIcon';
+import useFormAuth from '../auth/components/form-auth/hooks/useFormAuth';
 
 import { CascadeStyle } from '../../helpers/cascade-style.class';
 import style from './navbar.module.scss';
@@ -24,6 +24,8 @@ const Navbar: React.FC = () => {
   const user = {
     color: 'coral',
     avatar: '',
+    // avatar:
+    //   'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUgIJGlF2-ymRggolSPjXo-zfdk0b2S-2MjpttMgBuPQ&s',
     _id: String(Date.now()),
     role: RoleEnum.ADMIN,
   };

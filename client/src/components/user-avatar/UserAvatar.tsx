@@ -12,10 +12,13 @@ interface IUserAvatarProp {
 const UserAvatar: React.FC<IUserAvatarProp> = ({ avatar, color, styles }) => {
   const s = new CascadeStyle(style, styles);
 
-  return avatar.length ? (
+  return avatar?.length ? (
     <img src={avatar} alt="User avatar" className={s.getClass('avatar')} />
   ) : (
-    <span data-color={color} className={s.getClass('avatar')}></span>
+    <span
+      style={{ backgroundColor: color }}
+      className={s.getClass('avatar')}
+    ></span>
   );
 };
 
