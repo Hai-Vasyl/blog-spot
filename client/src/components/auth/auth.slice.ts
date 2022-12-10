@@ -45,15 +45,12 @@ export default new SliceFactory({
       { payload }: PayloadAction<IClearMessage>,
     ) => {
       state.errors = state.errors.map((error) => {
-        console.log(error.field, payload.field);
         if (error.field === payload.field) {
           error = { ...error, message: '' };
         }
 
         return error;
       });
-      console.log('sdfsdf', payload);
-      // state.errors = [...state.errors].map((err) => ({ ...err }));
     },
   },
   thunks: [
@@ -66,6 +63,12 @@ export default new SliceFactory({
     {
       name: 'register',
       payload: { url: '/users/register', method: RequestMethodEnum.POST },
+      fetchFullfilled,
+      fetchRejected,
+    },
+    {
+      name: 'loginGoogle',
+      payload: { url: '/users/login-google', method: RequestMethodEnum.POST },
       fetchFullfilled,
       fetchRejected,
     },

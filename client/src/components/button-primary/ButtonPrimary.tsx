@@ -11,6 +11,7 @@ export interface IButtonPrimaryProps {
   styles?: IStyle[];
   type?: ButtonTypeEnum;
   iconRight?: boolean;
+  disabled?: false;
 }
 
 const ButtonPrimary: React.FC<IButtonPrimaryProps> = ({
@@ -20,6 +21,7 @@ const ButtonPrimary: React.FC<IButtonPrimaryProps> = ({
   styles,
   type = ButtonTypeEnum.BUTTON,
   iconRight = false,
+  disabled,
 }) => {
   const s = new CascadeStyle(style, styles);
 
@@ -28,6 +30,7 @@ const ButtonPrimary: React.FC<IButtonPrimaryProps> = ({
       onClick={onClick}
       className={s.getClass('btn', iconRight && 'btn--icon-right')}
       type={type}
+      disabled={disabled}
     >
       {icon && (
         <span

@@ -5,5 +5,6 @@ export default registerAs('common', () => {
 
   return {
     port: env.PORT,
+    nodeEnv: env.NODE_ENV,
   };
 });

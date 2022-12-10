@@ -12,11 +12,14 @@ import { RegisterValidationMiddleware } from '@/modules/users/middlewares/regist
 import { LoginValidationMiddleware } from '@/modules/users/middlewares/login-validation.middleware';
 import { LoggerMiddleware } from '@/shared/modules/logger/middlawares/logger.middleware';
 import { FilesModule } from './files/files.module';
+import { DataSource } from 'typeorm';
 
 @Module({
   imports: [...initModules, AuthModule, UsersModule, FilesModule],
 })
 export class AppModule implements NestModule {
+  public constructor(private dataSource: DataSource) {}
+
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(RegisterValidationMiddleware)

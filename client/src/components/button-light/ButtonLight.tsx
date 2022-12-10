@@ -14,6 +14,7 @@ const ButtonLight: React.FC<IButtonPrimaryProps> = ({
   styles,
   type,
   iconRight,
+  disabled,
 }) => {
   const s = new CascadeStyle(style, styles);
 
@@ -25,6 +26,7 @@ const ButtonLight: React.FC<IButtonPrimaryProps> = ({
       styles={s.getCascade()}
       type={type}
       iconRight={iconRight}
+      disabled={disabled}
     />
   );
 };

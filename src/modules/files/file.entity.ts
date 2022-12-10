@@ -1,51 +1,70 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Types } from 'mongoose';
+import { Column, Entity, JoinTable, ManyToMany, ManyToOne } from 'typeorm';
 
 import { User } from '@/modules/users/user.entity';
 import { Category } from '@/modules/categories/category.entity';
 import { AccessTypeEnum } from '@/shared/enums/access-type.enum';
 import { Base } from '@/shared/entities/base.entity';
-import { Feature } from '@/shared/common/feature';
 import { FileTypeEnum } from '@/modules/files/enums/file-type.enum';
+import { SizeEnum } from './enums/size.enum';
+import { Content } from '../contents/entities/content.entity';
 
-@Schema({ timestamps: true })
+@Entity('files')
 export class File extends Base {
-  @Prop({ type: String, unique: true, required: true })
+  @Column({ type: 'varchar', nullable: false })
   url: string;
 
-  @Prop({ type: String, required: true })
+  @Column({ type: 'varchar', nullable: false })
   name: string;
 
-  @Prop({ type: String, required: true })
+  @Column({ type: 'varchar', nullable: false })
+  relation: string;
+
+  @Column({ type: 'varchar', nullable: false })
   mimetype: string;
 
-  @Prop({ type: String, required: true })
+  @Column({ type: 'varchar', nullable: false, length: 100 })
   title: string;
 
-  @Prop({ type: String })
+  @Column({ type: 'varchar', length: 300 })
   description: string;
 
-  @Prop({
-    type: String,
-    enum: Object.values(AccessTypeEnum),
+  @Column({ type: 'int', default: 1 })
+  order: number;
+
+  @Column({ type: 'boolean', default: false, name: 'is_active' })
+  isActive: boolean;
+
+  @Column({
+    type: 'enum',
+    enum: AccessTypeEnum,
     default: AccessTypeEnum.PUBLIC,
+    name: 'access_type',
   })
   accessType: AccessTypeEnum;
 
-  @Prop({
+  @Column({
     type: String,
-    enum: Object.values(FileTypeEnum),
-    default: FileTypeEnum.IMAGE,
+    enum: FileTypeEnum,
+    nullable: false,
+    name: 'file_type',
   })
   fileType: FileTypeEnum;
 
-  @Prop({ type: Types.ObjectId, ref: 'User', required: true })
-  creator: User | string;
+  @Column({ type: 'enum', enum: SizeEnum, nullable: false })
+  size: SizeEnum;
 
-  @Prop({ type: Types.ObjectId, ref: 'Category', required: true })
-  category: Category | string;
+  @ManyToOne(() => User, (user) => user.files)
+  creator: User;
+
+  @ManyToMany(() => Category, (category) => category.fileRefs)
+  @JoinTable({
+    name: 'category_id',
+  })
+  categoryRefs: Category[];
+
+  @ManyToMany(() => Content, (content) => content.fileRefs)
+  @JoinTable({
+    name: 'content_id',
+  })
+  contentRefs: Content[];
 }
-
-export type FileDoc = File & Document;
-export const FileSchema = SchemaFactory.createForClass(File);
-export const FileFeature = new Feature(File.name, FileSchema);

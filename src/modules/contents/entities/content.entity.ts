@@ -1,46 +1,37 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Types } from 'mongoose';
+import { Column, Entity, ManyToOne } from 'typeorm';
 
 import { Base } from '@/shared/entities/base.entity';
 import { User } from '@/modules/users/user.entity';
 import { Category } from '@/modules/categories/category.entity';
 import { AccessTypeEnum } from '@/shared/enums/access-type.enum';
-import { Feature } from '@/shared/common/feature';
 
-@Schema({ timestamps: true })
+@Entity('contents')
 export class Content extends Base {
-  @Prop({ type: String, required: true })
+  @Column({ type: 'varchar', nullable: false })
   title: string;
 
-  @Prop({ type: String, required: true })
+  @Column({ type: 'varchar', nullable: false })
   description: string;
 
-  @Prop({
-    type: String,
-    enum: Object.values(AccessTypeEnum),
+  @Column({
+    type: 'varchar',
+    enum: AccessTypeEnum,
     default: AccessTypeEnum.PUBLIC,
   })
-  accessType: string;
+  accessType: AccessTypeEnum;
 
-  @Prop({ type: Number, default: 0 })
+  @Column({ type: Number, default: 0 })
   rating: number;
 
-  @Prop({ type: Number, default: 0 })
+  @Column({ type: Number, default: 0 })
   comments: number;
 
-  @Prop({ type: String, required: true })
+  @Column({ type: 'varchar', nullable: false })
   color: string;
 
-  @Prop({ type: Types.ObjectId, ref: 'User', required: true })
-  author: User | string;
+  @ManyToOne(() => User, (user) => user.contents)
+  creator: User;
 
-  @Prop({ type: Types.ObjectId, ref: 'Category', required: true })
-  category: Category | string;
-
-  @Prop({ type: Types.ObjectId, ref: 'File' })
-  preview: File | string;
+  @ManyToOne(() => Category, (category) => category.contents)
+  category: Category;
 }
-
-export type ContentDoc = Content & Document;
-export const ContentSchema = SchemaFactory.createForClass(Content);
-export const ContentFeature = new Feature(Content.name, ContentSchema);

@@ -7,6 +7,7 @@ import { Initializer } from '@/shared/common/initializer';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     bufferLogs: true,
+    cors: true,
   });
 
   const configService = app.get(ConfigService);

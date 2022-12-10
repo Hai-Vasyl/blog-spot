@@ -1,45 +1,56 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Types } from 'mongoose';
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 
 import { GenderEnum } from '@/modules/users/enums/gender.enum';
 import { Base } from '@/shared/entities/base.entity';
-import { RoleEnum } from '@/modules/users/enums/role.enum';
-import { Feature } from '@/shared/common/feature';
 import { File } from '../files/file.entity';
+import { LoginMethodEnum } from './enums/login-method.enum';
+import { Role } from '../roles/role.entity';
+import { Category } from '../categories/category.entity';
+import { Content } from '../contents/entities/content.entity';
 
-@Schema({ timestamps: true })
+@Entity('users')
 export class User extends Base {
-  @Prop({ type: String, required: true, maxlength: 30 })
+  @Column({ type: 'varchar', nullable: false, length: 30 })
   firstName: string;
 
-  @Prop({ type: String, required: true, maxlength: 30 })
+  @Column({ type: 'varchar', nullable: false, length: 30 })
   lastName: string;
 
-  @Prop({ type: String, required: true, unique: true })
+  @Column({ type: 'varchar', nullable: false })
   email: string;
 
-  @Prop({ type: String, required: true })
+  @Column({ type: 'varchar', nullable: false })
   password: string;
 
-  @Prop({ type: String, enum: Object.values(GenderEnum) })
+  @Column({ type: 'enum', enum: GenderEnum, nullable: false })
   gender: GenderEnum;
 
-  @Prop({ type: String, enum: Object.values(RoleEnum), default: RoleEnum.USER })
-  role: RoleEnum;
-
-  @Prop({ type: Date })
+  @Column({ type: Date })
   birth: Date;
 
-  @Prop({ type: String, required: true })
+  @Column({ type: 'varchar', nullable: false })
   color: string;
 
-  @Prop({ type: String })
+  @Column({ type: 'varchar', length: 300 })
   bio: string;
 
-  @Prop({ type: Types.ObjectId, ref: 'File' })
-  avatar: File | string;
-}
+  @Column({
+    type: String,
+    enum: Object.values(LoginMethodEnum),
+    default: LoginMethodEnum.LOCAL,
+    name: 'login_method',
+  })
+  loginMethod: LoginMethodEnum;
 
-export type UserDoc = User & Document;
-export const UserSchema = SchemaFactory.createForClass(User);
-export const UserFeature = new Feature(User.name, UserSchema);
+  @ManyToOne(() => Role, (role) => role.users)
+  role: Role;
+
+  @OneToMany(() => File, (file) => file.creator)
+  files: File[];
+
+  @OneToMany(() => Category, (category) => category.creator)
+  categories: Category[];
+
+  @OneToMany(() => Content, (content) => content.creator)
+  contents: Content[];
+}

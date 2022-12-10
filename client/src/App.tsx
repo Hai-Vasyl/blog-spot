@@ -3,7 +3,7 @@ import React from 'react';
 import BackgroundOverlay from './components/background-overlay/BackgroundOverlay';
 import Navbar from './components/nav-bar/Navbar';
 import Popup from './components/popup/Popup';
-import Routes from './components/Routes';
+import Routes from './components/routes/Routes';
 
 const App: React.FC = () => {
   return (

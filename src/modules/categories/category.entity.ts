@@ -1,28 +1,37 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Types } from 'mongoose';
+import {
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+} from 'typeorm';
 
 import { Base } from '@/shared/entities/base.entity';
 import { User } from '@/modules/users/user.entity';
-import { Feature } from '@/shared/common/feature';
+import { File } from '../files/file.entity';
+import { Content } from '../contents/entities/content.entity';
 
-@Schema({ timestamps: true })
+@Entity('categories')
 export class Category extends Base {
-  @Prop({ type: String, required: true })
+  @Column({ type: 'varchar', nullable: false, length: 50 })
   name: string;
 
-  @Prop({ type: String })
+  @Column({ type: 'varchar', length: 300 })
   description: string;
 
-  @Prop({ type: String, required: true })
+  @Column({ type: 'varchar', nullable: false })
   color: string;
 
-  @Prop({ type: Types.ObjectId, ref: 'User', required: true })
-  creator: User | string;
+  @ManyToOne(() => User, (user) => user.categories)
+  creator: User;
 
-  @Prop({ type: Types.ObjectId, ref: 'File' })
-  preview: File | string;
+  @OneToMany(() => Content, (content) => content.category)
+  contents: Content[];
+
+  @ManyToMany(() => File, (file) => file.categories)
+  @JoinTable({
+    name: 'file_id',
+  })
+  fileRefs: File[];
 }
-
-export type CategoryDoc = Category & Document;
-export const CategorySchema = SchemaFactory.createForClass(Category);
-export const CategoryFeature = new Feature(Category.name, CategorySchema);

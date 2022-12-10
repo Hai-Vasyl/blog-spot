@@ -11,6 +11,9 @@ import { CascadeStyle } from '../../../../helpers/cascade-style.class';
 import style from './form-auth.module.scss';
 import useStore from '../../../../hooks/useStore';
 import authSlice from '../../auth.slice';
+import jwtDecode from 'jwt-decode';
+
+import logoGoogle from '../../../../images/google-logo.png';
 
 const { api, act } = authSlice;
 
@@ -53,6 +56,20 @@ const FormAuth: React.FC = () => {
   ]);
   const [, setForm] = formState;
   const isLoginForm = formType === FormType.LOGIN;
+
+  useEffect(() => {
+    // @ts-ignore
+    google.accounts.id.initialize({
+      client_id: process.env.REACT_APP_GOOGLE_AUTH_CLIENT_ID,
+      callback: onSubmitGoogle,
+    });
+
+    // @ts-ignore
+    google.accounts.id.renderButton(
+      document.getElementById('btn-google-auth'),
+      { theme: 'outline' },
+    );
+  }, []);
 
   useEffect(() => {
     const formStatesRaw = {
@@ -104,6 +121,17 @@ const FormAuth: React.FC = () => {
     }
   };
 
+  const onSubmitGoogle = (res: any) => {
+    const {
+      email,
+      family_name: lastName,
+      given_name: firstName,
+      picture: avatar,
+    } = jwtDecode(res.credential) as any;
+
+    call(api.loginGoogle({ email, lastName, firstName, avatar }));
+  };
+
   return (
     <Form
       onSubmit={onSubmit}
@@ -122,6 +150,22 @@ const FormAuth: React.FC = () => {
         name={isLoginForm ? 'Sign Up' : 'Sign In'}
         onClick={handleSwapForm}
       />
+      <div id="btn-google-auth" className={s.getClass('btn-google-auth')}></div>
+      {/* <GoogleLogin
+        clientId="299264735571-2j6fslvtqcb9kvcb5noimbamqu2s556a.apps.googleusercontent.com"
+        render={(renderProps) => (
+          <ButtonLight
+            name="Google"
+            onClick={renderProps.onClick}
+            type={ButtonTypeEnum.BUTTON}
+          />
+        )}
+        buttonText="Login"
+        onSuccess={onSuccessGoogleLogin}
+        onFailure={onFailureGoogleLogin}
+        cookiePolicy={'single_host_origin'}
+        isSignedIn={true}
+      /> */}
     </Form>
   );
 };
