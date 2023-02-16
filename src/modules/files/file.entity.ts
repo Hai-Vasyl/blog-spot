@@ -1,12 +1,22 @@
-import { Column, Entity, JoinTable, ManyToMany, ManyToOne } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+} from 'typeorm';
 
 import { User } from '@/modules/users/user.entity';
 import { Category } from '@/modules/categories/category.entity';
 import { AccessTypeEnum } from '@/shared/enums/access-type.enum';
 import { Base } from '@/shared/entities/base.entity';
 import { FileTypeEnum } from '@/modules/files/enums/file-type.enum';
-import { SizeEnum } from './enums/size.enum';
-import { Content } from '../contents/entities/content.entity';
+import { Section } from '@/modules/sections/section.entity';
+import { SizeEnum } from '@/modules/files/enums/size.enum';
+import { Content } from '@/modules/contents/entities/content.entity';
+import { Tag } from '@/modules/tags/tag.entity';
+import { Notification } from '@/modules/notifications/notification.entity';
 
 @Entity('files')
 export class File extends Base {
@@ -17,22 +27,13 @@ export class File extends Base {
   name: string;
 
   @Column({ type: 'varchar', nullable: false })
-  relation: string;
-
-  @Column({ type: 'varchar', nullable: false })
   mimetype: string;
 
-  @Column({ type: 'varchar', nullable: false, length: 100 })
+  @Column({ type: 'varchar', nullable: false, length: 50 })
   title: string;
 
   @Column({ type: 'varchar', length: 300 })
-  description: string;
-
-  @Column({ type: 'int', default: 1 })
-  order: number;
-
-  @Column({ type: 'boolean', default: false, name: 'is_active' })
-  isActive: boolean;
+  description: string | null;
 
   @Column({
     type: 'enum',
@@ -54,17 +55,26 @@ export class File extends Base {
   size: SizeEnum;
 
   @ManyToOne(() => User, (user) => user.files)
-  creator: User;
+  @JoinColumn({ name: 'creator_id' })
+  creator: User | null;
 
-  @ManyToMany(() => Category, (category) => category.fileRefs)
-  @JoinTable({
-    name: 'category_id',
-  })
-  categoryRefs: Category[];
+  // ---
 
-  @ManyToMany(() => Content, (content) => content.fileRefs)
-  @JoinTable({
-    name: 'content_id',
-  })
-  contentRefs: Content[];
+  @OneToMany(() => User, (user) => user.avatar)
+  users: User[];
+
+  @OneToMany(() => Content, (content) => content.preview)
+  contents: Content[];
+
+  @OneToMany(() => Section, (section) => section.preview)
+  sections: Section[];
+
+  @OneToMany(() => Category, (category) => category.preview)
+  categories: Category[];
+
+  @OneToMany(() => Notification, (notification) => notification.contextFile)
+  notifications: Notification[];
+
+  @ManyToMany(() => Tag, (tag) => tag.files)
+  tags: Tag[];
 }

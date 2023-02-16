@@ -4,18 +4,18 @@ import { UsersController } from '@/modules/users/users.controler';
 import { UsersService } from '@/modules/users/users.service';
 import { AuthModule } from '@/modules/auth/auth.module';
 import { LoggerModule } from '@/shared/modules/logger/logger.module';
-import { UserRepository } from './user.repository';
-import { UserFeature } from './user.entity';
-import { MongooseModule } from '@nestjs/mongoose';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { User } from '@/modules/users/user.entity';
+import { UserRepository } from '@/modules/users/user.repository';
 
 @Module({
   imports: [
-    forwardRef(() => AuthModule),
+    // forwardRef(() => ),
+    AuthModule,
     LoggerModule,
-    MongooseModule.forFeature([UserFeature]),
+    TypeOrmModule.forFeature([User]),
   ],
   controllers: [UsersController],
   providers: [UsersService, UserRepository],
-  exports: [MongooseModule, UserRepository],
 })
 export class UsersModule {}

@@ -1,6 +1,7 @@
 import {
   Column,
   Entity,
+  JoinColumn,
   JoinTable,
   ManyToMany,
   ManyToOne,
@@ -13,15 +14,26 @@ import { User } from '../users/user.entity';
 
 @Entity('roles')
 export class Role extends Base {
-  @Column({ type: 'varchar', nullable: false })
+  @Column({ type: 'varchar', nullable: false, length: 100 })
   name: string;
 
+  @Column({ type: 'varchar', length: 300 })
+  description: string | null;
+
   @Column({ type: 'varchar', nullable: false })
-  description: string;
+  color: string;
+
+  @ManyToOne(() => User, (user) => user.roles)
+  @JoinColumn({ name: 'creator_id' })
+  creator: User | null;
+
+  // ---
 
   @ManyToMany(() => Permission, (permission) => permission.roles)
   @JoinTable({
-    name: 'permission_id',
+    name: 'roles_permissions',
+    joinColumn: { name: 'role_id' },
+    inverseJoinColumn: { name: 'permission_id' },
   })
   permissions: Permission[];
 

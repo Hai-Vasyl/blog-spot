@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
 
 import { AppModule } from '@/modules/app.module';
-import { Initializer } from '@/shared/common/initializer';
+import { Initializer } from '@/shared/initializer';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {

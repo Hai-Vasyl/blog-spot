@@ -1,11 +1,4 @@
-import {
-  Column,
-  Entity,
-  JoinTable,
-  ManyToMany,
-  ManyToOne,
-  OneToMany,
-} from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 
 import { Base } from '@/shared/entities/base.entity';
 import { User } from '@/modules/users/user.entity';
@@ -18,20 +11,21 @@ export class Category extends Base {
   name: string;
 
   @Column({ type: 'varchar', length: 300 })
-  description: string;
+  description: string | null;
 
   @Column({ type: 'varchar', nullable: false })
   color: string;
 
   @ManyToOne(() => User, (user) => user.categories)
-  creator: User;
+  @JoinColumn({ name: 'creator_id' })
+  creator: User | null;
+
+  @ManyToOne(() => File, (file) => file.categories)
+  @JoinColumn({ name: 'preview_id' })
+  preview: File | null;
+
+  // ---
 
   @OneToMany(() => Content, (content) => content.category)
   contents: Content[];
-
-  @ManyToMany(() => File, (file) => file.categories)
-  @JoinTable({
-    name: 'file_id',
-  })
-  fileRefs: File[];
 }

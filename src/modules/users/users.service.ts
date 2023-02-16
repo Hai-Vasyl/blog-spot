@@ -26,27 +26,27 @@ export class UsersService {
     return user.save();
   }
 
-  public async loginGoogle(
-    loginGoogleUserDTO: LoginGoogleUserDTO,
-  ): Promise<JwtTokenResponseDTO> {
-    let user: User = await this.userRepository.model.findOne({
-      email: loginGoogleUserDTO.email,
-      loginMethod: LoginMethodEnum.GOOGLE,
-    });
+  // public async loginGoogle(
+  //   loginGoogleUserDTO: LoginGoogleUserDTO,
+  // ): Promise<JwtTokenResponseDTO> {
+  //   let user: User = await this.userRepository.model.findOne({
+  //     email: loginGoogleUserDTO.email,
+  //     loginMethod: LoginMethodEnum.GOOGLE,
+  //   });
 
-    if (!user) {
-      user = await this.createUser({
-        ...loginGoogleUserDTO,
-        loginMethod: LoginMethodEnum.GOOGLE,
-      });
-    }
+  //   if (!user) {
+  //     user = await this.createUser({
+  //       ...loginGoogleUserDTO,
+  //       loginMethod: LoginMethodEnum.GOOGLE,
+  //     });
+  //   }
 
-    return this.authService.login(user._id);
-  }
+  //   return this.authService.login(user._id);
+  // }
 
-  public async login(user: User): Promise<JwtTokenResponseDTO> {
-    return this.authService.login(user._id);
-  }
+  // public async login(user: User): Promise<JwtTokenResponseDTO> {
+  //   return this.authService.login(user._id);
+  // }
 
   public async register(
     registerUserDTO: RegisterUserDTO,
@@ -57,6 +57,6 @@ export class UsersService {
 
     const user = await this.createUser({ ...registerUserDTO, password });
 
-    return this.authService.login(user._id);
+    return this.authService.login(user.id);
   }
 }

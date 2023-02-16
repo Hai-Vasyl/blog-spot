@@ -1,29 +1,49 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Types } from 'mongoose';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 
 import { Content } from '@/modules/contents/entities/content.entity';
 import { User } from '@/modules/users/user.entity';
 import { Base } from '@/shared/entities/base.entity';
-import { Feature } from '@/shared/common/feature';
+import { CommentRating } from '@/modules/comments/entities/comment-rating.entity';
+import { Notification } from '@/modules/notifications/notification.entity';
 
-@Schema({ timestamps: true })
+@Entity('comments')
 export class Comment extends Base {
-  @Prop({ type: String, required: true })
+  @Column({ type: 'varchar', nullable: false, length: 300 })
   body: string;
 
-  @Prop({ type: Number, default: 0 })
-  rating: number;
+  @Column({ type: 'int', default: 0, name: 'ratings_number' })
+  ratingsNumber: number;
 
-  @Prop({ type: Types.ObjectId, ref: 'User', required: true })
-  creator: User | string;
+  @Column({ type: 'int', default: 0, name: 'comments_number' })
+  commentsNumber: number;
 
-  @Prop({ type: Types.ObjectId, ref: 'Content', required: true })
-  content: Content | string;
+  @Column({ type: 'boolean', default: false, name: 'is_attached' })
+  isAttached: boolean;
 
-  @Prop({ type: Types.ObjectId, ref: 'Comment' })
-  comment: Comment | string;
+  @ManyToOne(() => User, (user) => user.comments)
+  @JoinColumn({ name: 'creator_id' })
+  creator: User | null;
+
+  @ManyToOne(() => Content, (content) => content.comments, {
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'content_id' })
+  content: Content | null;
+
+  @ManyToOne(() => Comment, (comment) => comment.childComments, {
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'parent_comment_id' })
+  parentComment: Comment | null;
+
+  // ---
+
+  @OneToMany(() => Comment, (comment) => comment.parentComment)
+  childComments: Comment[];
+
+  @OneToMany(() => CommentRating, (commentRating) => commentRating.comment)
+  commentRatings: CommentRating[];
+
+  @OneToMany(() => Notification, (notification) => notification.contextComment)
+  notifications: Notification[];
 }
-
-export type CommentDoc = Comment & Document;
-export const CommentSchema = SchemaFactory.createForClass(Comment);
-export const CommentFeature = new Feature(Comment.name, CommentSchema);

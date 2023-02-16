@@ -2,6 +2,8 @@ import {
   Body,
   Controller,
   Get,
+  HttpCode,
+  HttpStatus,
   Post,
   Req,
   Res,
@@ -28,7 +30,7 @@ export class UsersController {
     this.logger.setContext('UsersController');
   }
 
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Get()
   public async users() {
     this.logger.log('Get all users!');
@@ -40,33 +42,24 @@ export class UsersController {
     ]);
   }
 
-  // @Get('/google')
-  // @UseGuards(AuthGuard('google'))
-  // async googleAuth(@Req() req) {}
-
-  // @UseGuards(AuthGuard('google'))
-  // @Get('/google/redirect')
-  // public async loginGoogle(@Req() req: Request): Promise<JwtTokenResponseDTO> {
-  //   return this.usersService.loginGoogle(req.user as LoginGoogleUserDTO);
+  // @UseGuards(LocalAuthGuard)
+  // @Post('/login')
+  // public async login(@Req() req: Request): Promise<JwtTokenResponseDTO> {
+  //   return this.usersService.login(req.user as User);
   // }
 
-  @UseGuards(LocalAuthGuard)
-  @Post('/login')
-  public async login(@Req() req: Request): Promise<JwtTokenResponseDTO> {
-    return this.usersService.login(req.user as User);
-  }
-
   @Post('/register')
+  @HttpCode(HttpStatus.CREATED)
   public async register(
     @Body() registerUserDTO: RegisterUserDTO,
   ): Promise<JwtTokenResponseDTO> {
     return this.usersService.register(registerUserDTO);
   }
 
-  @Post('/login-google')
-  public async loginGoogle(
-    @Body() loginGoogleUserDTO: LoginGoogleUserDTO,
-  ): Promise<JwtTokenResponseDTO> {
-    return this.usersService.loginGoogle(loginGoogleUserDTO);
-  }
+  // @Post('/login-google')
+  // public async loginGoogle(
+  //   @Body() loginGoogleUserDTO: LoginGoogleUserDTO,
+  // ): Promise<JwtTokenResponseDTO> {
+  //   return this.usersService.loginGoogle(loginGoogleUserDTO);
+  // }
 }

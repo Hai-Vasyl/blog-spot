@@ -1,5 +1,6 @@
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { WinstonModule } from 'nest-winston';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 import databaseConfig from '@/configs/database.config';
 import jwtConfig from '@/configs/jwt.config';
@@ -8,7 +9,6 @@ import commonConfig from '@/configs/common.config';
 import awsConfig from '@/configs/aws.config';
 import googleConfig from '@/configs/google.config';
 import { LoggerModule } from '@/shared/modules/logger/logger.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
 
 export const initModules = [
   ConfigModule.forRoot({

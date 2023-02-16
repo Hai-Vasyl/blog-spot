@@ -8,7 +8,7 @@ import { User } from '@/modules/users/user.entity';
 import { RegisterUserDTO } from '@/modules/users/dto/register-user.dto';
 import { mapErrorResponse } from '@/shared/helpers/map-error-response';
 import { JwtTokenResponseDTO } from '@/modules/users/dto/jwt-token-response.dto';
-import { LoginGoogleUserDTO } from '../users/dto/login-google-user.dto';
+// import { LoginGoogleUserDTO } from '../users/dto/login-google-user.dto';
 import { LoginMethodEnum } from '../users/enums/login-method.enum';
 
 @Injectable()

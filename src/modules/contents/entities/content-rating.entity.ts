@@ -1,23 +1,18 @@
-import { Types } from 'mongoose';
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Entity, JoinColumn, ManyToOne } from 'typeorm';
 
-import { Content } from '@/modules/contents/entities/content.entity';
-import { User } from '@/modules/users/user.entity';
 import { Rating } from '@/shared/entities/rating.entity';
-import { Feature } from '@/shared/common/feature';
+import { User } from '@/modules/users/user.entity';
+import { Content } from '@/modules/contents/entities/content.entity';
 
-@Schema({ timestamps: true })
+@Entity('content_ratings')
 export class ContentRating extends Rating {
-  @Prop({ type: Types.ObjectId, ref: 'User', required: true })
-  user: User | string;
+  @ManyToOne(() => User, (user) => user.contentRatings)
+  @JoinColumn({ name: 'creator_id' })
+  creator: User | null;
 
-  @Prop({ type: Types.ObjectId, ref: 'Content', required: true })
-  content: Content | string;
+  @ManyToOne(() => Content, (content) => content.contentRatings, {
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'content_id' })
+  content: Content | null;
 }
-
-export type ContentRatingDoc = ContentRating & Document;
-export const ContentRatingSchema = SchemaFactory.createForClass(ContentRating);
-export const ContentRatingFeature = new Feature(
-  ContentRating.name,
-  ContentRatingSchema,
-);

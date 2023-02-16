@@ -1,37 +1,50 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Types } from 'mongoose';
+import { Column, Entity, JoinColumn, ManyToMany, ManyToOne } from 'typeorm';
 
 import { Base } from '@/shared/entities/base.entity';
 import { Content } from '@/modules/contents/entities/content.entity';
 import { User } from '@/modules/users/user.entity';
 import { AccessTypeEnum } from '@/shared/enums/access-type.enum';
-import { Feature } from '@/shared/common/feature';
+import { Tag } from '@/modules/tags/tag.entity';
+import { File } from '@/modules/files/file.entity';
 
-@Schema({ timestamps: true })
+@Entity('sections')
 export class Section extends Base {
-  @Prop({ type: String })
+  @Column({ type: 'varchar', nullable: false, length: 50 })
   title: string;
 
-  @Prop({ type: String, required: true })
+  @Column({ type: 'varchar', nullable: false })
   body: string;
 
-  @Prop({
-    type: String,
-    enum: Object.values(AccessTypeEnum),
+  @Column({
+    type: 'enum',
+    enum: AccessTypeEnum,
     default: AccessTypeEnum.PUBLIC,
+    name: 'access_type',
   })
   accessType: string;
 
-  @Prop({ type: Boolean, default: false })
-  important: boolean;
+  @Column({ type: 'boolean', default: false, name: 'is_important' })
+  isImportant: boolean;
 
-  @Prop({ type: Types.ObjectId, ref: 'Content', required: true })
-  content: Content | string;
+  @Column({ type: 'int', default: 1 })
+  order: number;
 
-  @Prop({ type: Types.ObjectId, ref: 'User', required: true })
-  creator: User | string;
+  @ManyToOne(() => User, (user) => user.sections)
+  @JoinColumn({ name: 'creator_id' })
+  creator: User | null;
+
+  @ManyToOne(() => Content, (content) => content.sections, {
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'content_id' })
+  content: Content | null;
+
+  @ManyToOne(() => File, (file) => file.sections)
+  @JoinColumn({ name: 'preview_id' })
+  preview: File | null;
+
+  // ---
+
+  @ManyToMany(() => Tag, (tag) => tag.sections)
+  tags: Tag[];
 }
-
-export type SectionDoc = Section & Document;
-export const SectionSchema = SchemaFactory.createForClass(Section);
-export const SectionFeature = new Feature(Section.name, SectionSchema);
